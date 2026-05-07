@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 7・8 英熟語4択クイズ</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --ink: #182033;
+      --muted: #667085;
+      --line: #dde3ee;
+      --accent: #2563eb;
+      --accent-soft: #e8f0ff;
+      --ok: #16a34a;
+      --ok-soft: #eaf7ee;
+      --bad: #dc2626;
+      --bad-soft: #fff0f0;
+      --shadow: 0 16px 36px rgba(24, 32, 51, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .app {
+      width: min(960px, 100%);
+      margin: 0 auto;
+      padding: 18px 14px 32px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ffffff, #edf4ff);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 13px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.08s ease, border-color 0.15s ease, background 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active { transform: scale(0.98); }
+    button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    button.ghost { color: var(--muted); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 11px 10px;
+      text-align: center;
+    }
+
+    .stat b { display: block; font-size: 18px; }
+    .stat span { color: var(--muted); font-size: 11px; }
+
+    .quiz {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pill {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 800;
+    }
+
+    .question {
+      padding: 22px 18px 16px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .ja {
+      font-size: clamp(25px, 6vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .choices {
+      display: grid;
+      gap: 10px;
+      padding: 0 16px 16px;
+    }
+
+    .choice {
+      width: 100%;
+      text-align: left;
+      border-radius: 18px;
+      padding: 15px 15px;
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 800;
+      background: #fff;
+      border: 2px solid var(--line);
+      white-space: normal;
+    }
+
+    .choice small {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #eef2f7;
+      color: var(--muted);
+      margin-right: 8px;
+      font-size: 13px;
+    }
+
+    .choice.correct {
+      border-color: var(--ok);
+      background: var(--ok-soft);
+      color: #126334;
+    }
+
+    .choice.wrong {
+      border-color: var(--bad);
+      background: var(--bad-soft);
+      color: #991b1b;
+    }
+
+    .answerBox {
+      margin: 0 16px 16px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      display: none;
+    }
+
+    .answerBox.show { display: block; }
+    .answerBox .mini { color: var(--muted); font-size: 12px; font-weight: 800; margin-bottom: 6px; }
+    .answerBox .ans { font-size: 20px; font-weight: 900; line-height: 1.35; }
+
+    .footer {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      padding: 0 16px 18px;
+    }
+
+    .footer button { flex: 1; }
+
+    .meter {
+      height: 8px;
+      background: #e9edf5;
+      overflow: hidden;
+    }
+
+    .meter > div {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.2s ease;
+    }
+
+    .mistakes {
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      display: none;
+    }
+
+    .mistakes.show { display: block; }
+    .mistakes h2 { font-size: 17px; margin: 0 0 10px; }
+    .mistakeItem {
+      border-top: 1px solid var(--line);
+      padding: 10px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .mistakeItem:first-of-type { border-top: none; }
+    .mistakeItem b { display: block; font-size: 15px; }
+    .mistakeItem span { color: var(--muted); }
+
+    @media (max-width: 560px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      header { border-radius: 18px; }
+      .quiz { border-radius: 20px; }
+      .choice { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>Unit 7・8 英熟語 4択クイズ</h1>
+      <p class="sub">日本語の意味を見て、正しい英語表現を選びます。誤答候補は、語数・前置詞・先頭語・スペルの近さを見て、形が似ているものを優先して出します。</p>
+      <div class="bar">
+        <button id="allBtn" class="active" onclick="setUnit('all')">全部</button>
+        <button id="u7Btn" onclick="setUnit('Unit 7')">Unit 7</button>
+        <button id="u8Btn" onclick="setUnit('Unit 8')">Unit 8</button>
+        <button class="ghost" onclick="restart()">シャッフル</button>
+        <button class="ghost" onclick="toggleMistakes()">ミス一覧</button>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat"><b id="score">0</b><span>正解</span></div>
+      <div class="stat"><b id="miss">0</b><span>ミス</span></div>
+      <div class="stat"><b id="rate">0%</b><span>正答率</span></div>
+      <div class="stat"><b id="streak">0</b><span>連続正解</span></div>
+    </section>
+
+    <section class="quiz">
+      <div class="meter"><div id="meter"></div></div>
+      <div class="topline">
+        <span id="progress">1 / 160</span>
+        <span class="pill" id="unitTag">Unit 7</span>
+      </div>
+      <div class="question">
+        <div class="label">この意味に合う英語表現は？</div>
+        <p class="ja" id="questionText"></p>
+      </div>
+      <div class="choices" id="choices"></div>
+      <div class="answerBox" id="answerBox">
+        <div class="mini">正解</div>
+        <div class="ans" id="answerText"></div>
+      </div>
+      <div class="footer">
+        <button onclick="speakCurrent()">発音</button>
+        <button class="primary" onclick="nextQuestion()">次へ</button>
+      </div>
+    </section>
+
+    <section class="mistakes" id="mistakeBox">
+      <h2>ミス一覧</h2>
+      <div id="mistakeList">まだミスはありません。</div>
+    </section>
+  </main>
+
+  <script>
+    const DATA = [{"unit": "Unit 7", "ja": "Aに一致する", "en": "correspond with A", "wrong": ["correspond to A", "correspond for A", "correspond of A"]}, {"unit": "Unit 7", "ja": "Aに害を与える", "en": "do A harm\ndo harm to A", "wrong": ["do harm for A", "give A harm", "do A damage"]}, {"unit": "Unit 7", "ja": "AにBについて知らせる", "en": "inform A of[about] B", "wrong": ["inform B of A", "inform A to B", "inform A for B"]}, {"unit": "Unit 7", "ja": "AのBを治す", "en": "cure A of B", "wrong": ["cure B of A", "cure A to B", "cure A for B"]}, {"unit": "Unit 7", "ja": "本来Aにある", "en": "consist in A", "wrong": ["consist on A", "consist at A", "consist to A"]}, {"unit": "Unit 7", "ja": "Aを秘密にしておく", "en": "keep A to oneself", "wrong": ["keep A for oneself", "keep A of oneself", "keep A with oneself"]}, {"unit": "Unit 7", "ja": "Aを共通に持つ", "en": "have A in common", "wrong": ["have A on common", "have A at common", "have A to common"]}, {"unit": "Unit 7", "ja": "Aに勝つ", "en": "get the better of A", "wrong": ["get the better to A", "get the better for A", "get the better with A"]}, {"unit": "Unit 7", "ja": "Aからなる", "en": "consist of A", "wrong": ["consist to A", "consist for A", "consist with A"]}, {"unit": "Unit 7", "ja": "率直に意見を述べる", "en": "speak out", "wrong": ["speak off", "speak up", "speak in"]}, {"unit": "Unit 7", "ja": "Aに従って生きる", "en": "live up to A", "wrong": ["live up for A", "live up of A", "live up with A"]}, {"unit": "Unit 7", "ja": "Aに上手く対処する", "en": "cope with A", "wrong": ["cope to A", "cope for A", "cope of A"]}, {"unit": "Unit 7", "ja": "Aを狙う", "en": "aim at A", "wrong": ["aim in A", "aim on A", "aim to A"]}, {"unit": "Unit 7", "ja": "確かめる", "en": "make sure[certain]", "wrong": ["make surely", "make sure of", "make certain to"]}, {"unit": "Unit 7", "ja": "Aを是認する", "en": "approve of A", "wrong": ["approve to A", "approve for A", "approve with A"]}, {"unit": "Unit 7", "ja": "Aを中止する", "en": "call off A", "wrong": ["call out A", "call up A", "call away A"]}, {"unit": "Unit 7", "ja": "生じる", "en": "come into being", "wrong": ["come to being", "come in being", "come for being"]}, {"unit": "Unit 7", "ja": "Aをすりへらす", "en": "wear out A", "wrong": ["wear off A", "wear up A", "wear in A"]}, {"unit": "Unit 7", "ja": "Aをじっくり考える", "en": "think over A", "wrong": ["think out A", "think off A", "think up A"]}, {"unit": "Unit 7", "ja": "わざわざ〜する", "en": "go out of A's way to do", "wrong": ["go out of A's way doing", "go out of A's way to doing", "go out to A's way to do"]}, {"unit": "Unit 7", "ja": "自分の考えを分からせる", "en": "make oneself understood", "wrong": ["make oneself understand", "make oneself understanding", "make oneself to understand"]}, {"unit": "Unit 7", "ja": "AをBと区別する", "en": "distinguish A from B", "wrong": ["distinguish B from A", "distinguish A to B", "distinguish A with B"]}, {"unit": "Unit 7", "ja": "見栄を張る", "en": "show off", "wrong": ["show out", "show up", "show away"]}, {"unit": "Unit 7", "ja": "進歩する", "en": "make progress", "wrong": ["make a progress", "take progress", "do progress"]}, {"unit": "Unit 7", "ja": "退学する", "en": "drop out", "wrong": ["drop off", "drop up", "drop in"]}, {"unit": "Unit 7", "ja": "Aを除外する", "en": "leave out A", "wrong": ["leave off A", "leave up A", "leave in A"]}, {"unit": "Unit 7", "ja": "始まる", "en": "set in", "wrong": ["set on", "set at", "set to"]}, {"unit": "Unit 7", "ja": "AからBを取り除く", "en": "clear A of B", "wrong": ["clear B of A", "clear A to B", "clear A for B"]}, {"unit": "Unit 7", "ja": "Aを始める", "en": "enter into A", "wrong": ["enter to A", "enter in A", "enter for A"]}, {"unit": "Unit 7", "ja": "Aを差し控える", "en": "refrain from A", "wrong": ["refrain to A", "refrain of A", "refrain with A"]}, {"unit": "Unit 7", "ja": "Aを明るみに出す", "en": "bring A to light", "wrong": ["bring A for light", "bring A of light", "bring A with light"]}, {"unit": "Unit 7", "ja": "Aに遅れないで着いていく", "en": "keep up with A", "wrong": ["keep up to A", "keep up for A", "keep up of A"]}, {"unit": "Unit 7", "ja": "Aを考慮に入れる", "en": "take A into account", "wrong": ["take A to account", "take A in account", "take A for account"]}, {"unit": "Unit 7", "ja": "明るみに出る", "en": "come to light", "wrong": ["come for light", "come of light", "come with light"]}, {"unit": "Unit 7", "ja": "Aに立ち寄る", "en": "come by A", "wrong": ["come in A", "come on A", "come at A"]}, {"unit": "Unit 7", "ja": "BをAの責任にする", "en": "blame A for B", "wrong": ["blame B for A", "blame A to B", "blame A of B"]}, {"unit": "Unit 7", "ja": "全焼する", "en": "burn down", "wrong": ["burn up", "burn off", "burn out"]}, {"unit": "Unit 7", "ja": "Aから外れないでいる", "en": "keep to A", "wrong": ["keep for A", "keep of A", "keep with A"]}, {"unit": "Unit 7", "ja": "交代でする", "en": "take turns", "wrong": ["take a turn", "make turns", "take turn"]}, {"unit": "Unit 7", "ja": "自由に〜する", "en": "feel free to do", "wrong": ["feel free doing", "feel free to doing", "feel free for do"]}, {"unit": "Unit 7", "ja": "A行きである", "en": "be bound for A", "wrong": ["be bound to A", "be bound of A", "be bound with A"]}, {"unit": "Unit 7", "ja": "Aのおかげで", "en": "by[in] virtue of A", "wrong": ["by virtue to A", "by virtue for A", "by virtue with A"]}, {"unit": "Unit 7", "ja": "Aに反対している", "en": "be opposed to A", "wrong": ["be opposed for A", "be opposed of A", "be opposed with A"]}, {"unit": "Unit 7", "ja": "〜しなければならない", "en": "be forced to do", "wrong": ["be forced doing", "be forced to doing", "be forced for do"]}, {"unit": "Unit 7", "ja": "飛行機で", "en": "by air", "wrong": ["in air", "on air", "by the air"]}, {"unit": "Unit 7", "ja": "人目見ただけで", "en": "at a glance", "wrong": ["in a glance", "on a glance", "to a glance"]}, {"unit": "Unit 7", "ja": "Aに服従している", "en": "be subject to A", "wrong": ["be subject for A", "be subject of A", "be subject with A"]}, {"unit": "Unit 7", "ja": "自由に〜できる", "en": "be free to do", "wrong": ["be free doing", "be free to doing", "be free for do"]}, {"unit": "Unit 7", "ja": "仕方なく〜する", "en": "be compelled to do", "wrong": ["be compelled doing", "be compelled to doing", "be compelled for do"]}, {"unit": "Unit 7", "ja": "Aに賛成して", "en": "in favor of A\nin A's favor", "wrong": ["in favor to A", "in favor for A", "in favor with A"]}, {"unit": "Unit 7", "ja": "その場で", "en": "on the spot", "wrong": ["in the spot", "at the spot", "to the spot"]}, {"unit": "Unit 7", "ja": "Aどのようなものですか", "en": "What is A like？", "wrong": ["What does A like?", "What is A look like?", "What is A alike?"]}, {"unit": "Unit 7", "ja": "Aの理由で", "en": "on account of A", "wrong": ["on account to A", "on account for A", "on account with A"]}, {"unit": "Unit 7", "ja": "今までのところは", "en": "as (of) yet", "wrong": ["as (to) yet", "as (for) yet", "as (with) yet"]}, {"unit": "Unit 7", "ja": "見えないところに", "en": "out of (A's) sight", "wrong": ["out to (A's) sight", "out for (A's) sight", "out with (A's) sight"]}, {"unit": "Unit 7", "ja": "Aの点から", "en": "in terms of A", "wrong": ["in terms to A", "in terms for A", "in terms with A"]}, {"unit": "Unit 7", "ja": "Aを必要として", "en": "in need of A", "wrong": ["in need to A", "in need for A", "in need with A"]}, {"unit": "Unit 7", "ja": "〜した方がいい", "en": "may[might] as well do", "wrong": ["may for well do", "may to well do", "may with well do"]}, {"unit": "Unit 7", "ja": "長々と", "en": "at length", "wrong": ["in length", "at long", "at the length"]}, {"unit": "Unit 7", "ja": "AにBを謝罪する", "en": "apologize to A for B", "wrong": ["apologize to B for A", "apologize to A to B", "apologize to A of B"]}, {"unit": "Unit 7", "ja": "概して", "en": "by and large", "wrong": ["in and large", "by large", "by and largely"]}, {"unit": "Unit 7", "ja": "Aの正反対の", "en": "contrary to A", "wrong": ["contrary for A", "contrary of A", "contrary with A"]}, {"unit": "Unit 7", "ja": "大抵", "en": "more often than not", "wrong": ["more to often than not", "more of often than not", "more with often than not"]}, {"unit": "Unit 7", "ja": "〜するや否や⋯", "en": "no sooner〜than ...", "wrong": ["no sooner...that", "no more sooner...than", "no sooner...when"]}, {"unit": "Unit 7", "ja": "進行中で", "en": "under way", "wrong": ["on way", "under the way", "in way"]}, {"unit": "Unit 7", "ja": "流行して", "en": "in fashion", "wrong": ["on fashion", "at fashion", "to fashion"]}, {"unit": "Unit 7", "ja": "Aに従事している", "en": "be engaged in A", "wrong": ["be engaged on A", "be engaged at A", "be engaged to A"]}, {"unit": "Unit 7", "ja": "すぐに", "en": "in no time", "wrong": ["on no time", "at no time", "to no time"]}, {"unit": "Unit 7", "ja": "Aといえば", "en": "speaking[talking] of A", "wrong": ["speaking to A", "speaking for A", "speaking with A"]}, {"unit": "Unit 7", "ja": "思いのままに", "en": "at will", "wrong": ["in will", "at willing", "at one will"]}, {"unit": "Unit 7", "ja": "Aの原因で", "en": "due to A", "wrong": ["due for A", "due of A", "due with A"]}, {"unit": "Unit 7", "ja": "はるかに", "en": "by far", "wrong": ["in far", "by farther", "far by"]}, {"unit": "Unit 7", "ja": "手をつないで", "en": "hand in hand", "wrong": ["hand by hand", "hand to hand", "in hand in hand"]}, {"unit": "Unit 7", "ja": "なぜ〜", "en": "What〜for？", "wrong": ["Why 〜for?", "What〜of?", "What〜to?"]}, {"unit": "Unit 7", "ja": "立て続けに", "en": "on end", "wrong": ["in end", "on the end", "to end"]}, {"unit": "Unit 7", "ja": "亡くなる", "en": "pass away", "wrong": ["pass out", "pass off", "pass up"]}, {"unit": "Unit 7", "ja": "Aを犠牲にして", "en": "at the expense[cost] of A", "wrong": ["at the expense to A", "at the expense for A", "at the expense with A"]}, {"unit": "Unit 7", "ja": "それどころか", "en": "on the contrary", "wrong": ["in the contrary", "at the contrary", "to the contrary"]}, {"unit": "Unit 7", "ja": "言うまでもなく", "en": "needless to say", "wrong": ["needless of say", "needless saying", "needless to speak"]}, {"unit": "Unit 7", "ja": "Aは言うまでもなく", "en": "let alone A", "wrong": ["let along A", "let alone with A", "let A alone"]}, {"unit": "Unit 8", "ja": "AをBと見なす", "en": "see A as B", "wrong": ["see B as A", "see A for B", "see A to B"]}, {"unit": "Unit 8", "ja": "Aから回復する", "en": "recover from A", "wrong": ["recover to A", "recover of A", "recover with A"]}, {"unit": "Unit 8", "ja": "Aを引き止める", "en": "hold back A", "wrong": ["hold out A", "hold away A", "hold off A"]}, {"unit": "Unit 8", "ja": "役割を果たす", "en": "play a role[part]", "wrong": ["play the role", "take a role", "make a role"]}, {"unit": "Unit 8", "ja": "AをBに閉じこめる", "en": "confine A to B", "wrong": ["confine B to A", "confine A for B", "confine A with B"]}, {"unit": "Unit 8", "ja": "Aにさかのぼる", "en": "date back to A", "wrong": ["date back for A", "date back of A", "date back with A"]}, {"unit": "Unit 8", "ja": "AをBにささげる", "en": "devote A to B", "wrong": ["devote B to A", "devote A for B", "devote A with B"]}, {"unit": "Unit 8", "ja": "続ける", "en": "carry on", "wrong": ["carry in", "carry out", "carry off"]}, {"unit": "Unit 8", "ja": "Aにかかる", "en": "come down with A", "wrong": ["come down to A", "come down for A", "come down of A"]}, {"unit": "Unit 8", "ja": "Aを訪問する", "en": "pay A a visit\npay a visit to A", "wrong": ["give A a visit", "make A a visit", "take A a visit"]}, {"unit": "Unit 8", "ja": "Aにある", "en": "lie in A", "wrong": ["lie on A", "lie at A", "lie to A"]}, {"unit": "Unit 8", "ja": "Aにふける", "en": "indulge in A", "wrong": ["indulge on A", "indulge at A", "indulge to A"]}, {"unit": "Unit 8", "ja": "Aを説得して〜させる", "en": "persuade A to do", "wrong": ["persuade A doing", "persuade A to doing", "persuade A for do"]}, {"unit": "Unit 8", "ja": "Aに同情する", "en": "sympathize with A", "wrong": ["sympathize to A", "sympathize for A", "sympathize of A"]}, {"unit": "Unit 8", "ja": "ふりをする", "en": "make believe", "wrong": ["make belief", "make to believe", "make believing"]}, {"unit": "Unit 8", "ja": "Aの粗探しをする", "en": "find fault with A", "wrong": ["find fault to A", "find fault for A", "find fault of A"]}, {"unit": "Unit 8", "ja": "Aに貢献する", "en": "contribute to A", "wrong": ["contribute for A", "contribute of A", "contribute with A"]}, {"unit": "Unit 8", "ja": "AをBに変える", "en": "turn A into B", "wrong": ["turn B into A", "turn A to B", "turn A in B"]}, {"unit": "Unit 8", "ja": "AにBの容疑をかける", "en": "suspect A of B", "wrong": ["suspect B of A", "suspect A to B", "suspect A for B"]}, {"unit": "Unit 8", "ja": "傍観する", "en": "look on", "wrong": ["look in", "look at", "look over"]}, {"unit": "Unit 8", "ja": "AをBと交換する", "en": "exchange A for B", "wrong": ["exchange B for A", "exchange A to B", "exchange A of B"]}, {"unit": "Unit 8", "ja": "決まって〜する", "en": "make a point of doing", "wrong": ["make a point of to do", "make a point of to doing", "make a point to doing"]}, {"unit": "Unit 8", "ja": "Aに訴える", "en": "resort to A", "wrong": ["resort for A", "resort of A", "resort with A"]}, {"unit": "Unit 8", "ja": "AをBに加える", "en": "add A to B", "wrong": ["add B to A", "add A for B", "add A with B"]}, {"unit": "Unit 8", "ja": "Aが〜するのを禁止する", "en": "prohibit A from doing", "wrong": ["prohibit A from to do", "prohibit A from to doing", "prohibit A to doing"]}, {"unit": "Unit 8", "ja": "AをBに順応させる", "en": "adapt A to B", "wrong": ["adapt B to A", "adapt A for B", "adapt A with B"]}, {"unit": "Unit 8", "ja": "Aを専攻する", "en": "major in A", "wrong": ["major on A", "major at A", "major to A"]}, {"unit": "Unit 8", "ja": "Aの結果になる", "en": "end in A", "wrong": ["end on A", "end at A", "end to A"]}, {"unit": "Unit 8", "ja": "Aを引き起こす", "en": "set off A", "wrong": ["set out A", "set up A", "set away A"]}, {"unit": "Unit 8", "ja": "〜してばかりいる", "en": "do nothing but do", "wrong": ["give nothing but do", "make nothing but do", "take nothing but do"]}, {"unit": "Unit 8", "ja": "Aを望む", "en": "wish for A", "wrong": ["wish to A", "wish of A", "wish with A"]}, {"unit": "Unit 8", "ja": "Aに屈する", "en": "yield to A", "wrong": ["yield for A", "yield of A", "yield with A"]}, {"unit": "Unit 8", "ja": "AにBを説得させる", "en": "convince A of B", "wrong": ["convince B of A", "convince A to B", "convince A for B"]}, {"unit": "Unit 8", "ja": "Aに由来する", "en": "derive from A", "wrong": ["derive to A", "derive of A", "derive with A"]}, {"unit": "Unit 8", "ja": "Aに妥協する", "en": "come to terms with A", "wrong": ["come for terms with A", "come of terms with A", "come with terms with A"]}, {"unit": "Unit 8", "ja": "Aを自由の身とする", "en": "set A free", "wrong": ["put A free", "take A free", "make A free"]}, {"unit": "Unit 8", "ja": "いちかばちかやってみる", "en": "take a chance[chances]", "wrong": ["make a chance", "take chances to", "take a change"]}, {"unit": "Unit 8", "ja": "Aを打ち切る", "en": "break off A", "wrong": ["break out A", "break up A", "break away A"]}, {"unit": "Unit 8", "ja": "AにBのことを祝う", "en": "congratulate A on B", "wrong": ["congratulate B on A", "congratulate A to B", "congratulate A for B"]}, {"unit": "Unit 8", "ja": "AをBの代わりに用いる", "en": "substitute A for B", "wrong": ["substitute B for A", "substitute A to B", "substitute A of B"]}, {"unit": "Unit 8", "ja": "Aは言うまでもなく", "en": "not to mention A", "wrong": ["not for mention A", "not of mention A", "not with mention A"]}, {"unit": "Unit 8", "ja": "Aに関しては", "en": "with regard[respect] to A", "wrong": ["with regard for A", "with regard of A", "with regard with A"]}, {"unit": "Unit 8", "ja": "平均して", "en": "on average", "wrong": ["in average", "at average", "to average"]}, {"unit": "Unit 8", "ja": "言ってみれば", "en": "so to speak[say]", "wrong": ["so for speak", "so of speak", "so with speak"]}, {"unit": "Unit 8", "ja": "何よりも", "en": "most of all", "wrong": ["most to all", "most for all", "most with all"]}, {"unit": "Unit 8", "ja": "制御出来ない", "en": "out of control", "wrong": ["out to control", "out for control", "out with control"]}, {"unit": "Unit 8", "ja": "Aだからいっそう", "en": "all the more[batter] for A", "wrong": ["all the more to A", "all the more of A", "all the more with A"]}, {"unit": "Unit 8", "ja": "当分のあいだ", "en": "for the time being", "wrong": ["to the time being", "of the time being", "with the time being"]}, {"unit": "Unit 8", "ja": "増加して", "en": "on the increase", "wrong": ["in the increase", "at the increase", "to the increase"]}, {"unit": "Unit 8", "ja": "Aと比べると", "en": "in comparison to[with] A", "wrong": ["in comparison for A", "in comparison of A", "in comparison with A"]}, {"unit": "Unit 8", "ja": "もしAがなければ", "en": "If it were not for A", "wrong": ["If it was not for A", "If it were not of A", "If it were no for A"]}, {"unit": "Unit 8", "ja": "当然〜ということになる", "en": "It follows that〜.", "wrong": ["It is followed that.", "It follows to that.", "It follows which."]}, {"unit": "Unit 8", "ja": "Aと交換に", "en": "in exchange for A", "wrong": ["in exchange to A", "in exchange of A", "in exchange with A"]}, {"unit": "Unit 8", "ja": "その間に", "en": "in the meantime[meanwhile]", "wrong": ["on the meantime", "at the meantime", "to the meantime"]}, {"unit": "Unit 8", "ja": "Aを解決する", "en": "clear up A", "wrong": ["clear out A", "clear off A", "clear down A"]}, {"unit": "Unit 8", "ja": "たとえあったとしても", "en": "if any", "wrong": ["if anything", "if some", "if no"]}, {"unit": "Unit 8", "ja": "筆舌に尽くし難い", "en": "beyond description", "wrong": ["beyond to description", "beyond of description", "beyond with description"]}, {"unit": "Unit 8", "ja": "断続的に", "en": "on and off\noff and on", "wrong": ["in and off", "at and off", "to and off"]}, {"unit": "Unit 8", "ja": "〜するのに苦労する", "en": "have difficulty[trouble] (in) doing", "wrong": ["have difficulty to do", "have difficulty (in) to doing", "have difficulty (on) doing"]}, {"unit": "Unit 8", "ja": "もし〜ならば", "en": "provided[providing] that〜", "wrong": ["provided to that〜", "provided of that〜", "provided with that〜"]}, {"unit": "Unit 8", "ja": "AをBにさらす", "en": "expose A to B", "wrong": ["expose B to A", "expose A for B", "expose A with B"]}, {"unit": "Unit 8", "ja": "AをBに適用する", "en": "apply A to B", "wrong": ["apply B to A", "apply A for B", "apply A with B"]}, {"unit": "Unit 8", "ja": "こころ行くまで", "en": "to A's heart's content", "wrong": ["for A's heart's content", "of A's heart's content", "with A's heart's content"]}, {"unit": "Unit 8", "ja": "実際には", "en": "in practice", "wrong": ["on practice", "in practical", "by practice"]}, {"unit": "Unit 8", "ja": "〜という点で", "en": "in that〜", "wrong": ["on that〜", "at that〜", "to that〜"]}, {"unit": "Unit 8", "ja": "Aに〜できるようにする", "en": "enable A to do", "wrong": ["enable A doing", "enable A to doing", "enable A for do"]}, {"unit": "Unit 8", "ja": "永久に", "en": "for good (and all)", "wrong": ["to good (and all)", "of good (and all)", "with good (and all)"]}, {"unit": "Unit 8", "ja": "〜しさえする", "en": "go so[as] far as to do", "wrong": ["go so far as doing", "go so far as to doing", "go so far as for do"]}, {"unit": "Unit 8", "ja": "理論的には", "en": "in theory", "wrong": ["on theory", "in theoretical", "by theory"]}, {"unit": "Unit 8", "ja": "内密に", "en": "in private", "wrong": ["on private", "in privacy", "by private"]}, {"unit": "Unit 8", "ja": "Aほど多くの", "en": "as many[much] as A", "wrong": ["for many as A", "to many as A", "with many as A"]}, {"unit": "Unit 8", "ja": "ひと握りのA", "en": "a handful of A", "wrong": ["a handful to A", "a handful for A", "a handful with A"]}, {"unit": "Unit 8", "ja": "全体から見て", "en": "on the whole", "wrong": ["in the whole", "at the whole", "to the whole"]}, {"unit": "Unit 8", "ja": "それなのに", "en": "and yet", "wrong": ["and still", "but yet", "and however"]}, {"unit": "Unit 8", "ja": "今頃はもう", "en": "by now", "wrong": ["until now", "by then", "in now"]}, {"unit": "Unit 8", "ja": "用心して", "en": "on A's guard", "wrong": ["in A's guard", "at A's guard", "to A's guard"]}, {"unit": "Unit 8", "ja": "Aを終える", "en": "be through with A", "wrong": ["be through to A", "be through for A", "be through of A"]}, {"unit": "Unit 8", "ja": "自分で", "en": "in person", "wrong": ["on person", "at person", "to person"]}, {"unit": "Unit 8", "ja": "見た目には", "en": "to the eye", "wrong": ["for the eye", "to an eye", "in the eye"]}, {"unit": "Unit 8", "ja": "Aに解放されている", "en": "be open to A", "wrong": ["be open for A", "be open of A", "be open with A"]}];
+
+    let currentUnit = 'all';
+    let deck = [];
+    let current = null;
+    let currentChoices = [];
+    let index = 0;
+    let score = 0;
+    let miss = 0;
+    let streak = 0;
+    let answered = false;
+    let mistakes = [];
+
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function escapeHTML(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function showText(str) {
+      return escapeHTML(str).replaceAll('\n', '<br>');
+    }
+
+    function normalize(str) {
+      return String(str)
+        .toLowerCase()
+        .replace(/\[[^\]]*\]/g, '')
+        .replace(/\n/g, ' ')
+        .replace(/[^a-z0-9 ]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function makeChoices(item) {
+      const choices = [{ en: item.en, correct: true }];
+      const seen = new Set([normalize(item.en)]);
+      for (const w of item.wrong) {
+        const key = normalize(w);
+        if (!key || seen.has(key)) continue;
+        choices.push({ en: w, correct: false });
+        seen.add(key);
+        if (choices.length === 4) break;
+      }
+      while (choices.length < 4) {
+        const base = item.en.split('\n')[0];
+        const fallback = choices.length === 1 ? base + ' to' : choices.length === 2 ? base + ' of' : base + ' with';
+        choices.push({ en: fallback, correct: false });
+      }
+      return shuffle(choices);
+    }
+
+    function setUnit(unit) {
+      currentUnit = unit;
+      document.getElementById('allBtn').classList.toggle('active', unit === 'all');
+      document.getElementById('u7Btn').classList.toggle('active', unit === 'Unit 7');
+      document.getElementById('u8Btn').classList.toggle('active', unit === 'Unit 8');
+      restart();
+    }
+
+    function restart() {
+      const pool = currentUnit === 'all' ? DATA : DATA.filter(x => x.unit === currentUnit);
+      deck = shuffle(pool);
+      index = 0;
+      score = 0;
+      miss = 0;
+      streak = 0;
+      answered = false;
+      mistakes = [];
+      renderMistakes();
+      render();
+    }
+
+    function render() {
+      if (index >= deck.length) {
+        document.getElementById('questionText').textContent = '完了です';
+        document.getElementById('choices').innerHTML = '';
+        document.getElementById('answerBox').classList.add('show');
+        document.getElementById('answerText').textContent = `正解 ${score} / ${deck.length}　ミス ${miss}`;
+        document.getElementById('meter').style.width = '100%';
+        updateStats();
+        return;
+      }
+
+      current = deck[index];
+      currentChoices = makeChoices(current);
+      answered = false;
+
+      document.getElementById('questionText').textContent = current.ja;
+      document.getElementById('unitTag').textContent = current.unit;
+      document.getElementById('progress').textContent = `${index + 1} / ${deck.length}`;
+      document.getElementById('meter').style.width = `${(index / deck.length) * 100}%`;
+      document.getElementById('answerBox').classList.remove('show');
+      document.getElementById('answerText').innerHTML = '';
+
+      const choicesHTML = currentChoices.map((choice, i) => `
+        <button class="choice" onclick="choose(${i})">
+          <small>${letters[i]}</small>${showText(choice.en)}
+        </button>
+      `).join('');
+      document.getElementById('choices').innerHTML = choicesHTML;
+      updateStats();
+    }
+
+    function choose(i) {
+      if (answered) return;
+      answered = true;
+      const buttons = [...document.querySelectorAll('.choice')];
+      const chosen = currentChoices[i];
+      const correctIndex = currentChoices.findIndex(x => x.correct);
+      buttons[correctIndex].classList.add('correct');
+      if (chosen.correct) { score++; streak++; }
+      else {
+        miss++; streak = 0; buttons[i].classList.add('wrong');
+        mistakes.push({ ja: current.ja, en: current.en, chosen: chosen.en, unit: current.unit });
+        renderMistakes();
+      }
+      document.getElementById('answerText').innerHTML = showText(current.en);
+      document.getElementById('answerBox').classList.add('show');
+      updateStats();
+    }
+
+    function nextQuestion() {
+      if (index >= deck.length) { restart(); return; }
+      index++;
+      render();
+    }
+
+    function updateStats() {
+      const answeredCount = score + miss;
+      const rate = answeredCount ? Math.round((score / answeredCount) * 100) : 0;
+      document.getElementById('score').textContent = score;
+      document.getElementById('miss').textContent = miss;
+      document.getElementById('rate').textContent = rate + '%';
+      document.getElementById('streak').textContent = streak;
+    }
+
+    function toggleMistakes() { document.getElementById('mistakeBox').classList.toggle('show'); }
+
+    function renderMistakes() {
+      const box = document.getElementById('mistakeList');
+      if (!mistakes.length) { box.textContent = 'まだミスはありません。'; return; }
+      box.innerHTML = mistakes.map(m => `
+        <div class="mistakeItem">
+          <b>${escapeHTML(m.ja)} <span>(${escapeHTML(m.unit)})</span></b>
+          <div>正解：${showText(m.en)}</div>
+          <div><span>選んだもの：${showText(m.chosen)}</span></div>
+        </div>
+      `).join('');
+    }
+
+    function speakCurrent() {
+      if (!current) return;
+      const text = current.en.split('\n')[0];
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+    }
+
+    restart();
+  </script>
+</body>
+</html>
